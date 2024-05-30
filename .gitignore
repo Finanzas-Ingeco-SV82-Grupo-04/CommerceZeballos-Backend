@@ -30,3 +30,5 @@ build/
 !**/src/test/**/build/
 
 src/main/resources/firebase.json
+
+target/classes/firebase.json
