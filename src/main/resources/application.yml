@@ -4,18 +4,21 @@ server:
 spring:
     application:
         name: zeballos_application
-    
+    config:
+
 
     datasource:
         url: ${DB_URL}
         username: ${DB_USER}
         password: ${DB_PASS}
-        driver-class-name: org.postgresql.Driver
+        driver-class-name: org.postgresql.Driver #com.mysql.cj.jdbc.Driver
 
 
     jpa:
-        hibernate:
-          ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+            ddl-auto: update
         show-sql: true
 
 app:
