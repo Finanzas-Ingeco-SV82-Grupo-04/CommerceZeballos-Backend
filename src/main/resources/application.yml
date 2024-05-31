@@ -5,8 +5,10 @@ spring:
     application:
         name: zeballos_application
     config:
+      use-legacy-processing: true
       import:
         - env.properties
+
     datasource:
         url: ${DB_URL}
         username: ${DB_USER}
