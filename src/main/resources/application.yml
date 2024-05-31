@@ -2,9 +2,9 @@
 server:
     port: ${SERVER_PORT}
 spring:
-    config:
-      import:
-         - env.properties
+    #config:
+      #import:
+         #- env.properties
     application:
         name: zeballos_application
     datasource:
