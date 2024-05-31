@@ -32,7 +32,7 @@ public class IProductService implements ProductService {
     @Transactional
     @Override
     public ApiResponse<?> registerProduct(ProductRequestDto productRequestDto, MultipartFile file) {
-        try {
+        /*try {
             var imageNewUrl = firebaseFileService.saveImage(file);
 
             var product = modelMapperConfig.modelMapper().map(productRequestDto, Product.class);
@@ -44,6 +44,7 @@ public class IProductService implements ProductService {
             e.printStackTrace(); //
             return new ApiResponse<>(false,"Error", null);
         }
+        */
         return new ApiResponse<>(true,"Product registered", null);
     }
 

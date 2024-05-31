@@ -29,7 +29,7 @@ public class FirebaseFileService {
     @Value("${FIREBASE_CREDENTIALS}")
     private String firebaseCredentials;
     private Storage storage;
-
+/*
     @EventListener
     public void init(ApplicationReadyEvent event) {
         try {
@@ -71,4 +71,5 @@ public class FirebaseFileService {
     private String getExtension(String originalFileName) {
         return StringUtils.getFilenameExtension(originalFileName);
     }
+    */
 }
