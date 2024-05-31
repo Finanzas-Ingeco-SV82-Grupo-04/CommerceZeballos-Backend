@@ -15,6 +15,6 @@ WORKDIR /app
 # Copy the JAR from the build stage to the run stage
 COPY --from=build /app/target/CommerceZeballos-0.0.1-SNAPSHOT.jar .
 # Expose the port the app runs on
-EXPOSE 8081
+EXPOSE 8082
 # Run the JAR file
 ENTRYPOINT ["java", "-jar", "CommerceZeballos-0.0.1-SNAPSHOT.jar"]
