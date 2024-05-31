@@ -31,4 +31,6 @@ build/
 
 src/main/resources/firebase.json
 
+src/main/resources/env.properties
+
 target/classes/firebase.json
