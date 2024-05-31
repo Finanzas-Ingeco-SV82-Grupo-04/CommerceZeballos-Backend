@@ -33,6 +33,8 @@ public class IProductService implements ProductService {
     @Override
     public ApiResponse<?> registerProduct(ProductRequestDto productRequestDto, MultipartFile file) {
         try {
+
+            // Guardar la imagen en Firebase Storage
             var imageNewUrl = firebaseFileService.saveImage(file);
 
             var product = modelMapperConfig.modelMapper().map(productRequestDto, Product.class);
