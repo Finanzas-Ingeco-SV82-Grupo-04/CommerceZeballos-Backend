@@ -26,6 +26,5 @@ public class CurrentAccountResponseDto {
     private Double interestRate;
     private Double moratoriumRate;
     private String dniClient;
-    private List<Transaction> transactions;
 
 }

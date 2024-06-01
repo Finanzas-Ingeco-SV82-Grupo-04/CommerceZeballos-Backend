@@ -62,11 +62,9 @@ public class IAccountService implements AccountService {
         if (!clientRepository.existsByDni(dni)) {
             throw new ResourceNotFoundException("Client not found");
         }
-        if(!currentAccountRepository.existsByDniClient(dni)){
-            throw new ResourceNotFoundException(" Current Account not found for this client");
-        }
 
-        var currentAccount = currentAccountRepository.findByDniClient(dni);
+        var currentAccount = currentAccountRepository.findByDniClient(dni)
+                .orElseThrow(() -> new ResourceNotFoundException("Current Account not found for this client"));
 
         currentAccount.setTypeInterest(updateCurrentAccountRequestDto.getTypeInterest());
         currentAccount.setCreditLimit(updateCurrentAccountRequestDto.getCreditLimit());
@@ -84,11 +82,10 @@ public class IAccountService implements AccountService {
 
     @Override
     public ApiResponse<?> deleteCurrentAccount(String dni) {
-        if(!currentAccountRepository.existsByDniClient(dni)){
-            throw new ResourceNotFoundException(" Current Account not found for this client");
-        }
 
-        var currentAccount = currentAccountRepository.findByDniClient(dni);
+
+        var currentAccount = currentAccountRepository.findByDniClient(dni)
+                .orElseThrow(() -> new ResourceNotFoundException("Current Account not found for this client"));
 
         currentAccountRepository.delete(currentAccount);
 

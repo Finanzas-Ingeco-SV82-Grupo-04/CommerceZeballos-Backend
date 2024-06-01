@@ -67,6 +67,7 @@ public class SecurityConfig  {
                     "/api/v1/auth/user/sign-in",
                     "/api/v1/current-account/**",
                     "api/v1/products/**",
+                    "/api/v1/transactions/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**"

@@ -3,11 +3,15 @@ package com.example.commercezeballos.current_account_management.domain.entities;
 
 import com.example.commercezeballos.current_account_management.domain.enums.ETransactionType;
 import com.example.commercezeballos.products_management.domain.entities.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +28,7 @@ public class Transaction {
     private Long id;
 
     @Column(name = "transaction_date")
-    private Date transactionDate;
+    private LocalDateTime transactionDate;
 
     @Column(name = "transaction_amount_not_interest")
     private Double transactionAmountNotInterest;
@@ -36,7 +40,7 @@ public class Transaction {
     @Column(name = "transaction_type")
     private ETransactionType transactionType;
 
-    @Column(name = "transaction_description")
+    @Column(name = "transaction_description", nullable = true)
     private String transactionDescription;
 
     @Column(name = "payment_completed")
@@ -52,6 +56,7 @@ public class Transaction {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "current_account_id", nullable = false)
+    @JsonIgnore
     private CurrentAccount currentAccount;
 
 
@@ -61,6 +66,7 @@ public class Transaction {
             joinColumns = @JoinColumn(name = "transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+
     private List<Product> products = new ArrayList<>();
 
 

@@ -2,6 +2,9 @@ package com.example.commercezeballos.products_management.domain.entities;
 
 
 import com.example.commercezeballos.current_account_management.domain.entities.Transaction;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,6 +37,7 @@ public class Product {
     private String imageUrl;
 
     @ManyToMany(mappedBy = "products",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions = new ArrayList<>();
 
 
