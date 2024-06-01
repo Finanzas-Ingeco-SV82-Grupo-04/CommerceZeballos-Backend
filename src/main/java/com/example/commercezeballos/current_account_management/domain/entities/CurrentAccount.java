@@ -37,6 +37,9 @@ public class CurrentAccount {
     @Column(name = "opening_date")
     private LocalDateTime openingDate;
 
+    @Column(name = "payment_day")
+    private Integer paymentDay;
+
     @Column(name = "account_closing_date")
     private LocalDate accountClosingDate;
 
@@ -51,7 +54,7 @@ public class CurrentAccount {
     private String dniClient;
 
 
-    @OneToMany(mappedBy = "currentAccount",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "currentAccount",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transactions = new ArrayList<>();
 
 

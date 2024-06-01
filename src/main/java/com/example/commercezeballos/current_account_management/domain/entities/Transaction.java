@@ -52,6 +52,9 @@ public class Transaction {
     @Column(name = "installment_amount", nullable = true)
     private Double installmentAmount;// monto por cuota
 
+    @Column(name = "remaining_installments", nullable = true)
+    private Integer remainingInstallments;// cuotas restantes
+
 
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -66,8 +69,12 @@ public class Transaction {
             joinColumns = @JoinColumn(name = "transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-
     private List<Product> products = new ArrayList<>();
+
+
+    @ManyToMany(mappedBy = "transactions",fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Payment> payments = new ArrayList<>();
 
 
 }

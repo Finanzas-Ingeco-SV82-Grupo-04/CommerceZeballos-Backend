@@ -47,6 +47,11 @@ public class IAccountService implements AccountService {
 
         currentAccount.setOpeningDate(LocalDateTime.now());
 
+        //Extraer el dia de la fecha de pago y asignarle a paymentDay
+        var paymentDate= currentAccount.getPaymentDate();
+        var paymentDay= paymentDate.getDayOfMonth();
+        currentAccount.setPaymentDay(paymentDay);
+
         var currentAccountSaved = currentAccountRepository.save(currentAccount);
 
         var currentAccountResponseDto = modelMapperConfig.modelMapper().map(currentAccountSaved, CurrentAccountResponseDto.class);

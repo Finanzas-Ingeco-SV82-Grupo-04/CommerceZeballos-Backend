@@ -22,6 +22,7 @@ public class CurrentAccountResponseDto {
     private Double creditLimit;
     private LocalDate paymentDate;
     private LocalDateTime openingDate;
+    private Integer paymentDay;
     private LocalDate accountClosingDate;
     private Double interestRate;
     private Double moratoriumRate;

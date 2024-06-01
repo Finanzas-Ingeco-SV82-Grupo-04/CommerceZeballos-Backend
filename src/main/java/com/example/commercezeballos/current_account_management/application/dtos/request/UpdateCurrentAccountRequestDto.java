@@ -31,6 +31,9 @@ public class UpdateCurrentAccountRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate accountClosingDate;
 
+    @NotNull(message = "El día de pago no puede ser nulo")
+    private Integer paymentDay;
+
     @NotNull(message = "La tasa de interés no puede ser nula")
     private Double interestRate;
 

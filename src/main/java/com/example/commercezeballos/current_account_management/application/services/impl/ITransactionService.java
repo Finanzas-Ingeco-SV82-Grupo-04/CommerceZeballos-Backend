@@ -59,6 +59,8 @@ public class ITransactionService implements TransactionService {
 
         }
         transaction.setTransactionDate(LocalDateTime.now());
+        transaction.setPaymentCompleted(false);
+        transaction.setRemainingInstallments(transaction.getInstallments());
         transaction.setProducts(products);
 
         var transactionSaved = transactionRepository.save(transaction);
