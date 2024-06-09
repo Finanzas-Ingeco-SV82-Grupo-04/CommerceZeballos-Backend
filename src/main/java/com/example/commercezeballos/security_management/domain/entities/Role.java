@@ -30,6 +30,4 @@ public class Role {
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     @JsonBackReference//To avoid infinite recursion
     private Set<UserEntity> userEntity= new HashSet<>();
-
-
 }

@@ -47,7 +47,4 @@ public class ProductController {
         var response = productService.deleteProduct(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-
 }

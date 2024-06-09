@@ -22,6 +22,4 @@ public class Client extends UserEntity {
 
     @Column(name = "phone")
     private String phone;
-
-
 }

@@ -4,14 +4,16 @@ import com.example.commercezeballos.security_management.application.dtos.request
 import com.example.commercezeballos.security_management.application.dtos.requestDto.ClientSignUpRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.requestDto.UserSingInRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.responseDto.AdminSignInResponseDto;
+import com.example.commercezeballos.security_management.application.dtos.responseDto.ClientSignInResponseDto;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
+
+import java.util.List;
 
 public interface UserService {
 
     ApiResponse<?> signUpAdminUser(AdminSignUpRequestDto adminSignUpRequestDto);
 
     ApiResponse<?> signUpClientUser(ClientSignUpRequestDto clientSignUpRequestDto);
-
 
     ApiResponse<?> signInUser(UserSingInRequestDto userSingInRequestDto);
 }

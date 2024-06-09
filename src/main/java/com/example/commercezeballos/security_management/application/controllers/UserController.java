@@ -4,15 +4,15 @@ package com.example.commercezeballos.security_management.application.controllers
 import com.example.commercezeballos.security_management.application.dtos.requestDto.AdminSignUpRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.requestDto.ClientSignUpRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.requestDto.UserSingInRequestDto;
+import com.example.commercezeballos.security_management.application.dtos.responseDto.ClientSignInResponseDto;
 import com.example.commercezeballos.security_management.application.services.UserService;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")

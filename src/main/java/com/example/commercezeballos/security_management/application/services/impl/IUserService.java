@@ -4,6 +4,7 @@ import com.example.commercezeballos.security_management.application.dtos.request
 import com.example.commercezeballos.security_management.application.dtos.requestDto.ClientSignUpRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.requestDto.UserSingInRequestDto;
 import com.example.commercezeballos.security_management.application.dtos.responseDto.AdminSignInResponseDto;
+import com.example.commercezeballos.security_management.application.dtos.responseDto.ClientSignInResponseDto;
 import com.example.commercezeballos.security_management.application.services.UserService;
 import com.example.commercezeballos.security_management.domain.entities.Admin;
 import com.example.commercezeballos.security_management.domain.entities.Client;
@@ -27,7 +28,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class IUserService implements UserService {

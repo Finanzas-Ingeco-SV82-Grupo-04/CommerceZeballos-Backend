@@ -3,6 +3,7 @@ package com.example.commercezeballos.security_management.infraestructure.reposit
 import com.example.commercezeballos.security_management.domain.entities.Role;
 import com.example.commercezeballos.security_management.domain.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -36,5 +37,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>{
     @Query(value = "SELECT r FROM Role r INNER JOIN r.userEntity au WHERE au.id = :UserId")
     Set<Role> getRolesByUserId(@Param("UserId") Long UserId);
 
+
+
+    //delete a client record
+    @Modifying
+    @Query("DELETE FROM UserEntity u WHERE u.id = :userId")
+    void deleteUserById(@Param("userId") Long userId);
+
+    @Modifying
+    @Query(value = "DELETE FROM user_roles WHERE user_id = :userId", nativeQuery = true)
+    void deleteUserRolesByUserId(@Param("userId") Long userId);
 }
 
