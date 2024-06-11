@@ -26,7 +26,7 @@ public class CurrentAccountController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/update/{dni}")
+    @PutMapping("/update/{dni}")
     public ResponseEntity<ApiResponse<?>> updateCurrentAccount(@Valid @RequestBody UpdateCurrentAccountRequestDto updateCurrentAccountRequestDto, @PathVariable String dni) {
         var response = accountService.updateCurrentAccount(dni, updateCurrentAccountRequestDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
