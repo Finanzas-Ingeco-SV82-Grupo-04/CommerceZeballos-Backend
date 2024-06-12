@@ -1,6 +1,7 @@
 package com.example.commercezeballos.products_management.application.services.impl;
 
 import com.example.commercezeballos.products_management.application.dtos.request.ProductRequestDto;
+import com.example.commercezeballos.products_management.application.dtos.response.ProductResponseDto;
 import com.example.commercezeballos.products_management.application.services.ProductService;
 import com.example.commercezeballos.products_management.domain.entities.Product;
 import com.example.commercezeballos.products_management.infraestructure.ProductRepository;
@@ -8,6 +9,8 @@ import com.example.commercezeballos.shared.config.ModelMapperConfig;
 import com.example.commercezeballos.shared.exception.ResourceNotFoundException;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import com.example.commercezeballos.shared.storage.FirebaseFileService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,8 +53,18 @@ public class IProductService implements ProductService {
     }
 
     @Override
-    public ApiResponse<?> getAllProducts() {
-        var products = productRepository.findAll();
+    public ApiResponse<Page<ProductResponseDto>> getAllProducts(Pageable pageable) {
+        var products = productRepository.findAll(pageable)
+                .map(product -> modelMapperConfig.modelMapper().map(product, ProductResponseDto.class));
+        return new ApiResponse<>(true,"Products list", products);
+    }
+
+
+    @Override
+    public ApiResponse<Page<ProductResponseDto>> searchProducts(String name, Pageable pageable) {
+        var products = productRepository.findByNameContainingIgnoreCase(name, pageable)
+                .map(product -> modelMapperConfig.modelMapper().map(product, ProductResponseDto.class));
+
         return new ApiResponse<>(true,"Products list", products);
     }
 

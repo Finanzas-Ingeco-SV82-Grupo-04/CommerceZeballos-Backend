@@ -4,6 +4,7 @@ import com.example.commercezeballos.products_management.application.dtos.request
 import com.example.commercezeballos.products_management.application.services.ProductService;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,16 @@ public class ProductController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<ApiResponse<?>> getAllProducts() {
-        var response = productService.getAllProducts();
+    public ResponseEntity<ApiResponse<?>> getAllProducts(@RequestParam int page, @RequestParam int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        var response = productService.getAllProducts(pageable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchByName")
+    public ResponseEntity<ApiResponse<?>> searchProducts(@RequestParam String name, @RequestParam int page, @RequestParam int size) {
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        var response = productService.searchProducts(name, pageable);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
