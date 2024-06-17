@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -35,6 +38,21 @@ public class GlobalExceptionHandler {
         );
         log.error(exception.getMessage());
         return new ApiResponse<>(false, exception.getMessage(), errorMessageResponse);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(value= HttpStatus.EXPECTATION_FAILED)
+    public ApiResponse<Map<String, Object>> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("message", "File too large!");
+        Map<String, Object> data = new HashMap<>();
+        data.put("timestamp", LocalDateTime.now());
+        data.put("message", "Maximum upload size exceeded");
+        data.put("details", exc.getMessage());
+        response.put("data", data);
+
+        return new ApiResponse<>(false, "Maximum upload size exceeded", response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

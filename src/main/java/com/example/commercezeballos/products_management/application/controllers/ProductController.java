@@ -4,7 +4,10 @@ import com.example.commercezeballos.products_management.application.dtos.request
 import com.example.commercezeballos.products_management.application.services.ProductService;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
     private final ProductService productService;
 
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<?>> registerProduct( @Valid @RequestPart ProductRequestDto productRequestDto ,@RequestParam("file")MultipartFile file) {
         var response = productService.registerProduct(productRequestDto, file);
@@ -46,8 +49,8 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<?>> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDto productRequestDto) {
-        var response = productService.updateProduct(id, productRequestDto);
+    public ResponseEntity<ApiResponse<?>> updateProduct(@PathVariable Long id, @Valid @RequestPart ProductRequestDto productRequestDto,@RequestParam(value = "file", required = false )MultipartFile file) {
+        var response = productService.updateProduct(id, productRequestDto,file);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

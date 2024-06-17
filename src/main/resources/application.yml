@@ -2,6 +2,11 @@
 server:
     port: ${SERVER_PORT}
 spring:
+    servlet:
+      multipart:
+        max-file-size: 3MB
+        max-request-size: 3MB
+
     config:
       import:
          - env.properties

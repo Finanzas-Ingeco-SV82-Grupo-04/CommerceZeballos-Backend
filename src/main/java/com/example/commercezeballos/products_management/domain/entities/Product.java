@@ -36,6 +36,9 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @ManyToMany(mappedBy = "products",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Transaction> transactions = new ArrayList<>();

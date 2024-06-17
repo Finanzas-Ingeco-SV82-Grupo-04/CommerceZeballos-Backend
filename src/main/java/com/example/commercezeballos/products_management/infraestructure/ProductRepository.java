@@ -6,5 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    //Traer todos los productos menos los que no estan activos
+    Page<Product> findByActiveTrue(Pageable pageable);
+
+    //Buscar productos por nombre y que esten activos
+    Page<Product> findByNameContainingAndActiveTrue(String name, Pageable pageable);
 }

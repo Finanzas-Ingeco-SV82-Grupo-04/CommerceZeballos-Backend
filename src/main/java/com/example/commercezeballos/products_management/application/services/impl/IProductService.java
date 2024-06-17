@@ -7,6 +7,7 @@ import com.example.commercezeballos.products_management.domain.entities.Product;
 import com.example.commercezeballos.products_management.infraestructure.ProductRepository;
 import com.example.commercezeballos.shared.config.ModelMapperConfig;
 import com.example.commercezeballos.shared.exception.ResourceNotFoundException;
+import com.example.commercezeballos.shared.model.dto.pageResponse.PageResponse;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import com.example.commercezeballos.shared.storage.FirebaseFileService;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,8 @@ public class IProductService implements ProductService {
             var product = modelMapperConfig.modelMapper().map(productRequestDto, Product.class);
             product.setImageUrl(imageNewUrl);
 
+            product.setActive(true);
+
             productRepository.save(product);
 
         } catch (IOException e) {
@@ -53,19 +56,38 @@ public class IProductService implements ProductService {
     }
 
     @Override
-    public ApiResponse<Page<ProductResponseDto>> getAllProducts(Pageable pageable) {
-        var products = productRepository.findAll(pageable)
+    public ApiResponse<PageResponse<ProductResponseDto>> getAllProducts(Pageable pageable) {
+        var products = productRepository.findByActiveTrue(pageable)
                 .map(product -> modelMapperConfig.modelMapper().map(product, ProductResponseDto.class));
-        return new ApiResponse<>(true,"Products list", products);
+
+        PageResponse<ProductResponseDto> pageResponse = PageResponse.<ProductResponseDto>builder()
+                .content(products.getContent())
+                .currentPage(products.getNumber())
+                .pageSize(products.getSize())
+                .totalElements(products.getTotalElements())
+                .totalPages(products.getTotalPages())
+                .pageNumber(products.getNumber())
+                .build();
+
+        return new ApiResponse<>(true,"Products list", pageResponse);
     }
 
 
     @Override
-    public ApiResponse<Page<ProductResponseDto>> searchProducts(String name, Pageable pageable) {
-        var products = productRepository.findByNameContainingIgnoreCase(name, pageable)
+    public ApiResponse<PageResponse<ProductResponseDto>> searchProducts(String name, Pageable pageable) {
+        var products = productRepository.findByNameContainingAndActiveTrue(name, pageable)
                 .map(product -> modelMapperConfig.modelMapper().map(product, ProductResponseDto.class));
 
-        return new ApiResponse<>(true,"Products list", products);
+        PageResponse<ProductResponseDto> pageResponse = PageResponse.<ProductResponseDto>builder()
+                .content(products.getContent())
+                .currentPage(products.getNumber())
+                .pageSize(products.getSize())
+                .totalElements(products.getTotalElements())
+                .totalPages(products.getTotalPages())
+                .pageNumber(products.getNumber())
+                .build();
+
+        return new ApiResponse<>(true,"Products list", pageResponse);
     }
 
     @Override
@@ -77,14 +99,40 @@ public class IProductService implements ProductService {
     }
 
     @Override
-    public ApiResponse<?> updateProduct(Long id, ProductRequestDto productRequestDto) {
+    public ApiResponse<?> updateProduct(Long id, ProductRequestDto productRequestDto,MultipartFile file) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-        modelMapperConfig.modelMapper().map(productRequestDto, product);
-        productRepository.save(product);
+        try {
+
+            //La imagen en la actualización es opcional
+            if(file != null || !file.isEmpty()){
+                // Guardar la imagen en Firebase Storage
+                var imageNewUrl = firebaseFileService.saveImage(file);
+                product.setImageUrl(imageNewUrl);
+            }else{
+                //Si no se envía una imagen, se mantiene la misma
+                product.setImageUrl(product.getImageUrl());
+            }
+
+            product.setName(productRequestDto.getName());
+            product.setDescription(productRequestDto.getDescription());
+            product.setPrice(productRequestDto.getPrice());
+
+            productRepository.save(product);
+
+            
+
+
+        } catch (IOException e) {
+            e.printStackTrace(); //
+            return new ApiResponse<>(false,"Error", null);
+        }
 
         return new ApiResponse<>(true,"Product updated", null);
+
+
+
     }
 
     @Override
@@ -92,8 +140,9 @@ public class IProductService implements ProductService {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-        productRepository.delete(product);
+        product.setActive(false);
+        productRepository.save(product);
 
-        return new ApiResponse<>(true,"Product deleted", null);
+        return new ApiResponse<>(true,"Product desactive/deleted", null);
     }
 }
