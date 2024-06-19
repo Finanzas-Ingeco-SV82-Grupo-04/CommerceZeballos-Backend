@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,10 +81,17 @@ public class ITransactionService implements TransactionService {
         List<Transaction> transactions = transactionRepository.findAllByCurrentAccountId(currentAccountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Transactions not found"));
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
         //mapear a transactionResponseDto y los productos solo el id
         List<TransactionResponseDto> transactionResponseDtos = transactions.stream()
                 .map(transaction -> {
                     var transactionResponseDto = modelMapperConfig.modelMapper().map(transaction, TransactionResponseDto.class);
+                    // Formatear la fecha como una cadena de texto en el formato deseado
+                    String formattedDate = transaction.getTransactionDate().toLocalDate().format(formatter);
+                    transactionResponseDto.setTransactionDate(formattedDate); // Asignar la fecha formateada al DTO
+                    
                     transactionResponseDto.setProductIds(transaction.getProducts().stream()
                             .map(Product::getId)
                             .collect(Collectors.toList()));
