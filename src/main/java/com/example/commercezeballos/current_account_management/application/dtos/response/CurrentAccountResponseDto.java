@@ -20,6 +20,7 @@ public class CurrentAccountResponseDto {
     private Long id;
     private EInterest typeInterest;
     private Double creditLimit;
+    private Double usedCredit;
     private LocalDate paymentDate;
     private LocalDateTime openingDate;
     private Integer paymentDay;

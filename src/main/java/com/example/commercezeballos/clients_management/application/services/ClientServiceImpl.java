@@ -1,6 +1,7 @@
 package com.example.commercezeballos.clients_management.application.services;
 import com.example.commercezeballos.clients_management.application.dtos.response.ClientResponseDto;
 import com.example.commercezeballos.clients_management.infraestucture.ClientManageRepository;
+import com.example.commercezeballos.current_account_management.infraestructure.CurrentAccountRepository;
 import com.example.commercezeballos.security_management.domain.entities.Client;
 import com.example.commercezeballos.security_management.infraestructure.repositories.UserRepository;
 import com.example.commercezeballos.shared.config.ModelMapperConfig;
@@ -16,15 +17,17 @@ import java.util.stream.Collectors;
 @Service
 public class ClientServiceImpl implements IClientService{
     private final ClientManageRepository clientRepository;
+
+    private final CurrentAccountRepository currentAccountRepository;
     private final ModelMapperConfig modelMapperConfig;
     private final UserRepository userRepository;
 
-    public ClientServiceImpl(ClientManageRepository clientRepository, ModelMapperConfig modelMapperConfig, UserRepository userRepository) {
+    public ClientServiceImpl(ClientManageRepository clientRepository, CurrentAccountRepository currentAccountRepository, ModelMapperConfig modelMapperConfig, UserRepository userRepository) {
         this.clientRepository = clientRepository;
+        this.currentAccountRepository = currentAccountRepository;
         this.modelMapperConfig = modelMapperConfig;
         this.userRepository = userRepository;
     }
-
     @Override
     public List<ClientResponseDto> getAllClients() {
         List<Client> clients = clientRepository.findAll();
@@ -52,6 +55,7 @@ public class ClientServiceImpl implements IClientService{
             Long userId = clientOptional.get().getId();
             userRepository.deleteUserRolesByUserId(userId);
             userRepository.deleteUserById(userId);
+            currentAccountRepository.updateActiveByDniClient(dni,false);
             return true;
         }
 

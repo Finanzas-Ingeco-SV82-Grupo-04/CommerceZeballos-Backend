@@ -39,8 +39,33 @@ public class IAccountService implements AccountService {
             throw new ApplicationException( HttpStatus.BAD_REQUEST ,"Client not found");
         }
 
-        if(currentAccountRepository.existsByDniClient(accountRequestDto.getDniClient())){
+        if(currentAccountRepository.existsByDniClientAndActiveIsTrue(accountRequestDto.getDniClient())){
             throw new ApplicationException( HttpStatus.BAD_REQUEST ,"Current Account already exists for this client");
+        }
+
+        if(currentAccountRepository.existsByDniClientAndActiveIsFalse(accountRequestDto.getDniClient())){
+            //reactivar cuenta
+            var currentAccount = currentAccountRepository.findByDniClient(accountRequestDto.getDniClient()).get();
+            currentAccount.setActive(true);
+            currentAccount.setTypeInterest(accountRequestDto.getTypeInterest());
+            currentAccount.setPaymentDate(accountRequestDto.getPaymentDate());
+            currentAccount.setAccountClosingDate(accountRequestDto.getAccountClosingDate());
+            currentAccount.setInterestRate(accountRequestDto.getInterestRate());
+            currentAccount.setMoratoriumRate(accountRequestDto.getMoratoriumRate());
+            currentAccount.setCreditLimit(accountRequestDto.getCreditLimit());
+
+            currentAccount.setOpeningDate(LocalDateTime.now());
+
+            //Extraer el dia de la fecha de pago y asignarle a paymentDay
+            var paymentDate= currentAccount.getPaymentDate();
+            var paymentDay= paymentDate.getDayOfMonth();
+            currentAccount.setPaymentDay(paymentDay);
+
+            var currentAccountSaved = currentAccountRepository.save(currentAccount);
+            var currentAccountResponseDto = modelMapperConfig.modelMapper().map(currentAccountSaved, CurrentAccountResponseDto.class);
+            System.out.println("cuenta reactivada");
+            return new ApiResponse<>(true," Current Account update successful register " ,currentAccountResponseDto);
+
         }
 
         var currentAccount= modelMapperConfig.modelMapper().map(accountRequestDto, CurrentAccount.class);
@@ -51,12 +76,15 @@ public class IAccountService implements AccountService {
         var paymentDate= currentAccount.getPaymentDate();
         var paymentDay= paymentDate.getDayOfMonth();
         currentAccount.setPaymentDay(paymentDay);
+        currentAccount.setUsedCredit(accountRequestDto.getCreditLimit());
+        currentAccount.setActive(true);
 
         var currentAccountSaved = currentAccountRepository.save(currentAccount);
 
         var currentAccountResponseDto = modelMapperConfig.modelMapper().map(currentAccountSaved, CurrentAccountResponseDto.class);
 
         //este
+        System.out.println("cuenta creada");
         return new ApiResponse<>(true," Current Account sucessfull register " ,currentAccountResponseDto);
 
     }
@@ -73,6 +101,7 @@ public class IAccountService implements AccountService {
 
         currentAccount.setTypeInterest(updateCurrentAccountRequestDto.getTypeInterest());
         currentAccount.setCreditLimit(updateCurrentAccountRequestDto.getCreditLimit());
+        currentAccount.setUsedCredit(updateCurrentAccountRequestDto.getCreditLimit());
         currentAccount.setPaymentDate(updateCurrentAccountRequestDto.getPaymentDate());
         currentAccount.setAccountClosingDate(updateCurrentAccountRequestDto.getAccountClosingDate());
         currentAccount.setInterestRate(updateCurrentAccountRequestDto.getInterestRate());

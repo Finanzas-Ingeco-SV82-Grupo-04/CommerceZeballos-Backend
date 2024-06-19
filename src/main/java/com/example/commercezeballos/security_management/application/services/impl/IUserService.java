@@ -93,6 +93,7 @@ public class IUserService implements UserService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST,"Dni already exists");
         }
 
+
         clientSignUpRequestDto.setPassword(passwordEncoder.encode(clientSignUpRequestDto.getPassword()));
 
 
@@ -110,6 +111,7 @@ public class IUserService implements UserService {
         userRepository.save(clientUser);
 
         return new ApiResponse<>(true, "Client user registered successfully", null);
+
     }
 
     @Transactional

@@ -31,6 +31,9 @@ public class CurrentAccount {
     @Column(name = "credit_limit")
     private Double creditLimit;
 
+    @Column(name="used_credit")
+    private Double usedCredit;
+
     @Column(name = "payment_date")
     private LocalDate paymentDate;
 
@@ -53,6 +56,9 @@ public class CurrentAccount {
     @Column(name = "dni_client")
     private String dniClient;
 
+
+    @Column(name = "active")
+    private Boolean active;
 
     @OneToMany(mappedBy = "currentAccount",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Transaction> transactions = new ArrayList<>();
