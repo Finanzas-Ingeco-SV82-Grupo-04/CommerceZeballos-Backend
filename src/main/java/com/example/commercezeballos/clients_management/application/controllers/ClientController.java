@@ -23,6 +23,11 @@ public class ClientController {
         return ResponseEntity.ok(clientService.getAllClients());
     }
 
+    @GetMapping("/find/{dni}")
+    public ResponseEntity<ApiResponse<ClientResponseDto>> getClientByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(clientService.getClientByDni(dni));
+    }
+
     @DeleteMapping("/delete/{dni}")
     public ResponseEntity<?> deleteByDni(@PathVariable String dni) {
 

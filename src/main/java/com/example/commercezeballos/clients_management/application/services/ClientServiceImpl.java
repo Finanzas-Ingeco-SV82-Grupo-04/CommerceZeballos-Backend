@@ -4,6 +4,8 @@ import com.example.commercezeballos.clients_management.infraestucture.ClientMana
 import com.example.commercezeballos.security_management.domain.entities.Client;
 import com.example.commercezeballos.security_management.infraestructure.repositories.UserRepository;
 import com.example.commercezeballos.shared.config.ModelMapperConfig;
+import com.example.commercezeballos.shared.exception.ResourceNotFoundException;
+import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -29,6 +31,17 @@ public class ClientServiceImpl implements IClientService{
         return clients.stream()
                 .map(client -> modelMapperConfig.modelMapper().map(client, ClientResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ApiResponse<ClientResponseDto> getClientByDni(String dni) {
+
+        var client = clientRepository.findByDni(dni)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with dni: " + dni));
+
+        var clientResponseDto = modelMapperConfig.modelMapper().map(client, ClientResponseDto.class);
+
+        return new ApiResponse<>(true, "Client found", clientResponseDto);
     }
 
     @Override
