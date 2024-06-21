@@ -60,6 +60,7 @@ public class IAccountService implements AccountService {
             var paymentDate= currentAccount.getPaymentDate();
             var paymentDay= paymentDate.getDayOfMonth();
             currentAccount.setPaymentDay(paymentDay);
+            currentAccount.setUsedCredit(0.00);
 
             var currentAccountSaved = currentAccountRepository.save(currentAccount);
             var currentAccountResponseDto = modelMapperConfig.modelMapper().map(currentAccountSaved, CurrentAccountResponseDto.class);
@@ -76,7 +77,7 @@ public class IAccountService implements AccountService {
         var paymentDate= currentAccount.getPaymentDate();
         var paymentDay= paymentDate.getDayOfMonth();
         currentAccount.setPaymentDay(paymentDay);
-        currentAccount.setUsedCredit(accountRequestDto.getCreditLimit());
+        currentAccount.setUsedCredit(0.00);
         currentAccount.setActive(true);
 
         var currentAccountSaved = currentAccountRepository.save(currentAccount);
