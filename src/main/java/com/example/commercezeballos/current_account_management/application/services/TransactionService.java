@@ -8,4 +8,6 @@ public interface TransactionService {
     ApiResponse<?> registerTransaction(TransactionRequestDto transactionRequestDto);
 
     ApiResponse<?> getAllTransactionsByCurrentAccountId(Long currentAccountId);
+
+    ApiResponse<?> getTransactionById(Long transactionId);
 }

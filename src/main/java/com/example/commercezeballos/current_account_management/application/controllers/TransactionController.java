@@ -29,4 +29,10 @@ public class TransactionController {
         var response = transactionService.getAllTransactionsByCurrentAccountId(currentAccountId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<ApiResponse<?>> getTransactionById(@PathVariable Long transactionId) {
+        var response = transactionService.getTransactionById(transactionId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

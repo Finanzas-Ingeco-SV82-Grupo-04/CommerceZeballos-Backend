@@ -100,9 +100,28 @@ public class ITransactionService implements TransactionService {
                 .collect(Collectors.toList());
 
         return new ApiResponse<>(true,"Transactions found", transactionResponseDtos);
-
-
     }
 
+
+    @Transactional
+    @Override
+    public ApiResponse<?>  getTransactionById(Long transactionId){
+
+        var transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+
+        var transactionResponseDto = modelMapperConfig.modelMapper().map(transaction, TransactionResponseDto.class);
+
+        // Formatear la fecha como una cadena de texto en el formato deseado
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = transaction.getTransactionDate().toLocalDate().format(formatter);
+        transactionResponseDto.setTransactionDate(formattedDate); // Asignar la fecha formateada al DTO
+
+        transactionResponseDto.setProductIds(transaction.getProducts().stream()
+                .map(Product::getId)
+                .collect(Collectors.toList()));
+
+        return new ApiResponse<>(true,"Transaction found", transactionResponseDto);
+    }
 
 }
