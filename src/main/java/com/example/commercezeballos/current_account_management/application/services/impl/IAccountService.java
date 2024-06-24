@@ -48,8 +48,8 @@ public class IAccountService implements AccountService {
             var currentAccount = currentAccountRepository.findByDniClient(accountRequestDto.getDniClient()).get();
             currentAccount.setActive(true);
             currentAccount.setTypeInterest(accountRequestDto.getTypeInterest());
-            currentAccount.setPaymentDate(accountRequestDto.getPaymentDate());
-            currentAccount.setAccountClosingDate(accountRequestDto.getAccountClosingDate());
+            //currentAccount.setPaymentDate(accountRequestDto.getPaymentDate());
+            //currentAccount.setAccountClosingDate(accountRequestDto.getAccountClosingDate());
             currentAccount.setInterestRate(accountRequestDto.getInterestRate());
             currentAccount.setMoratoriumRate(accountRequestDto.getMoratoriumRate());
             currentAccount.setCreditLimit(accountRequestDto.getCreditLimit());
@@ -57,9 +57,9 @@ public class IAccountService implements AccountService {
             currentAccount.setOpeningDate(LocalDateTime.now());
 
             //Extraer el dia de la fecha de pago y asignarle a paymentDay
-            var paymentDate= currentAccount.getPaymentDate();
-            var paymentDay= paymentDate.getDayOfMonth();
-            currentAccount.setPaymentDay(paymentDay);
+            //var paymentDate= currentAccount.getPaymentDate();
+            //var paymentDay= paymentDate.getDayOfMonth();
+            //currentAccount.setPaymentDay(paymentDay);
             currentAccount.setUsedCredit(0.00);
 
             var currentAccountSaved = currentAccountRepository.save(currentAccount);
@@ -74,9 +74,9 @@ public class IAccountService implements AccountService {
         currentAccount.setOpeningDate(LocalDateTime.now());
 
         //Extraer el dia de la fecha de pago y asignarle a paymentDay
-        var paymentDate= currentAccount.getPaymentDate();
-        var paymentDay= paymentDate.getDayOfMonth();
-        currentAccount.setPaymentDay(paymentDay);
+        //var paymentDate= currentAccount.getPaymentDate();
+        //var paymentDay= paymentDate.getDayOfMonth();
+        //currentAccount.setPaymentDay(paymentDay);
         currentAccount.setUsedCredit(0.00);
         currentAccount.setActive(true);
 
@@ -103,8 +103,8 @@ public class IAccountService implements AccountService {
         currentAccount.setTypeInterest(updateCurrentAccountRequestDto.getTypeInterest());
         currentAccount.setCreditLimit(updateCurrentAccountRequestDto.getCreditLimit());
         currentAccount.setUsedCredit(updateCurrentAccountRequestDto.getCreditLimit());
-        currentAccount.setPaymentDate(updateCurrentAccountRequestDto.getPaymentDate());
-        currentAccount.setAccountClosingDate(updateCurrentAccountRequestDto.getAccountClosingDate());
+        //currentAccount.setPaymentDate(updateCurrentAccountRequestDto.getPaymentDate());
+        //currentAccount.setAccountClosingDate(updateCurrentAccountRequestDto.getAccountClosingDate());
         currentAccount.setInterestRate(updateCurrentAccountRequestDto.getInterestRate());
         currentAccount.setMoratoriumRate(updateCurrentAccountRequestDto.getMoratoriumRate());
 

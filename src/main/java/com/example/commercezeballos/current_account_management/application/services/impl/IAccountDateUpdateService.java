@@ -24,6 +24,7 @@ public class IAccountDateUpdateService {
         LocalDate today = LocalDate.now();
         List<CurrentAccount> currentAccounts = currentAccountRepository.findAll();
 
+        /*
         for (CurrentAccount currentAccount : currentAccounts) {
             LocalDate paymentDate = currentAccount.getPaymentDate();
             if (paymentDate.isBefore(today)) {
@@ -31,6 +32,6 @@ public class IAccountDateUpdateService {
                 currentAccount.setPaymentDate(paymentDate);
                 currentAccountRepository.save(currentAccount);
             }
-        }
+        }*/
     }
 }

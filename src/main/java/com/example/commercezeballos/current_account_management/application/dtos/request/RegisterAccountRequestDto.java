@@ -1,6 +1,7 @@
 package com.example.commercezeballos.current_account_management.application.dtos.request;
 
 import com.example.commercezeballos.current_account_management.domain.enums.EInterest;
+import com.example.commercezeballos.current_account_management.domain.enums.ETypeFrecuency;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,13 +27,22 @@ public class RegisterAccountRequestDto {
     @NotNull(message = "El límite de crédito no puede ser nulo")
     private Double creditLimit;
 
-    @NotNull(message = "La fecha de pago no puede ser nula")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate paymentDate;
+    //@NotNull(message = "La fecha de pago no puede ser nula")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //private LocalDate paymentDate;
+    @NotNull(message = "El número de meses no puede ser nulo")
+    private Integer numberOfMonths;
 
-    @NotNull(message = "La fecha de cierre de cuenta no puede ser nula")
+    @NotNull(message = "El término de pago no puede ser nulo")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate accountClosingDate;
+    private LocalDate paymentTerm;
+
+    //@NotNull(message = "La fecha de cierre de cuenta no puede ser nula")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //private LocalDate accountClosingDate;
+
+    @NotNull(message = "La frecuencia de pago no puede ser nula")
+    private ETypeFrecuency paymentFrequency;
 
     @NotNull(message = "El día de pago no puede ser nulo")
     private Integer paymentDay;

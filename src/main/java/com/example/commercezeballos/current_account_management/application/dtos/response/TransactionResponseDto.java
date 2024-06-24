@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionResponseDto {
-
     private Long id;
     private Double transactionAmountNotInterest;
     private Double transactionAmountWithInterest;
@@ -24,6 +23,4 @@ public class TransactionResponseDto {
     private String transactionDate;
     private Long currentAccountId;
     private List<Long> productIds = new ArrayList<>();
-
-
 }

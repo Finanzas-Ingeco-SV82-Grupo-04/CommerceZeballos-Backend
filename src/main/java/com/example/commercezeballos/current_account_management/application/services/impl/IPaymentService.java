@@ -37,7 +37,7 @@ public class IPaymentService implements PaymentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Current Account not found"));
 
         //imprimir las transacciones
-        var transactionsByCurrentAccount = transactionRepository.findAllByCurrentAccountIdAndPaymentCompletedIsFalseAndTransactionDateBefore(currentAccount.getId(), currentAccount.getPaymentDate())
+       var transactionsByCurrentAccount = transactionRepository.findAllByCurrentAccountIdAndPaymentCompletedIsFalseAndTransactionDateBefore(currentAccount.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Transactions not found"));
 
         //imprimir las transacciones
