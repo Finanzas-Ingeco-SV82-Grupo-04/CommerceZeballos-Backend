@@ -1,13 +1,12 @@
 package com.example.commercezeballos.current_account_management.domain.entities;
-import com.example.commercezeballos.current_account_management.domain.enums.ETypeDescription;
 import com.example.commercezeballos.current_account_management.domain.enums.ETypeFrecuency;
-import com.example.commercezeballos.current_account_management.domain.enums.ETypeTransactionType;
+import com.example.commercezeballos.current_account_management.domain.enums.ETypeCredit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -24,23 +23,22 @@ public class PaymentPlan {
     @JoinColumn(name = "current_account_id")
     private CurrentAccount currentAccount;
 
-    private Double amountNotInterest;
+    @Column(name = "amount_used_credit")
+    private Double creditUsedOfCurrentAccount;//monto del credito usado de la cuenta corriente
+
+    @Column(name = "amount_per_payment_plan")
+    private Double amountPerPaymentPlan;
 
     @Enumerated(EnumType.STRING)
-    private ETypeTransactionType transactionType;
-
-    @Enumerated(EnumType.STRING)
-    private ETypeDescription description;
+    private ETypeCredit creditType;
 
     @Enumerated(EnumType.STRING)
     private ETypeFrecuency paymentFrequency;
 
     private Double interestRateByPaymentFrequency;
 
-    private Integer installments;
+    private LocalDate startDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_plan_id")
-    private List<InstallmentAmount> amountForEachInstallmentId;
+    private Boolean isPaid;
 }
 

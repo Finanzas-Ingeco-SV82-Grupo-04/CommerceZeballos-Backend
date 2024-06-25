@@ -14,9 +14,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Optional<List<Transaction>> findAllByCurrentAccountId(Long currentAccountId);
 
     //find transactions by current account id and paymentCompleted is false and transactionDate is before today
-    @Query("SELECT t FROM Transaction t WHERE t.currentAccount.id = :currentAccountId AND t.paymentCompleted = false AND FUNCTION('DATE', t.transactionDate) < :paymentDate")
-    Optional<List<Transaction>> findAllByCurrentAccountIdAndPaymentCompletedIsFalseAndTransactionDateBefore(
-            @Param("currentAccountId") Long currentAccountId);
 
 
 }

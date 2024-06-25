@@ -18,15 +18,17 @@ public class PaymentsPlanController {
         this.paymentPlanService = paymentPlanService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<?>> registerPaymentPlan(@Valid @RequestBody PaymentPlanRequestDto paymentPlanRequestDto) {
-        var response = paymentPlanService.registerPaymentPlan(paymentPlanRequestDto);
-        return ResponseEntity.ok(response);
-    }
 
     @GetMapping("/find/{dni}")
     public ResponseEntity<ApiResponse<?>> findPaymentPlanByDni(@PathVariable String dni) {
         var response = paymentPlanService.findPaymentPlanByDni(dni);
         return ResponseEntity.ok(response);
+    }
+
+    //actualizar el estado de pago de un plan de pago por id
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<?>> updatePaymentPlanIsPaidById(@PathVariable Long id, @RequestParam Boolean isPaid) {
+        paymentPlanService.updatePaymentPlanIsPaidById(id, isPaid);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Payment plan updated successfully", null));
     }
 }

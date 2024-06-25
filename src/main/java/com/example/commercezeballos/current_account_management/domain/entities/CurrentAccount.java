@@ -1,6 +1,7 @@
 package com.example.commercezeballos.current_account_management.domain.entities;
 
 import com.example.commercezeballos.current_account_management.domain.enums.EInterest;
+import com.example.commercezeballos.current_account_management.domain.enums.ETypeCredit;
 import com.example.commercezeballos.current_account_management.domain.enums.ETypeFrecuency;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,17 +44,11 @@ public class CurrentAccount {
     private LocalDateTime openingDate;
 
     @Column(name = "payment_term")
-    private LocalDate paymentTerm;
+    private LocalDate paymentTerm;//fecha de pago final, si es quincenal, es la fecha de pago de la ultima cuota
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_frequency")
     private ETypeFrecuency paymentFrequency;
-
-    //@Column(name = "payment_day")
-    //private Integer paymentDay;
-
-    //@Column(name = "account_closing_date")
-    //private LocalDate accountClosingDate;
 
     @Column(name = "interest_rate")
     private Double interestRate;
@@ -61,10 +56,15 @@ public class CurrentAccount {
     @Column(name = "moratorium_rate")
     private Double moratoriumRate;
 
+    @Column(name = "type_credit")
+    private ETypeCredit typeCredit;
+
 
     @Column(name = "dni_client")
     private String dniClient;
 
+    @Column(name = "number_payments")
+    private Integer numberPayments;
 
     @Column(name = "active")
     private Boolean active;
