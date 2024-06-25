@@ -7,6 +7,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
 
@@ -18,10 +21,10 @@ public class CorsConfig {
 
         //Define the origin, methods, and headers that are allowed
         //Define the origin
-        String originCors= "http://localhost:4200";
+        List<String> allowedOrigins = Arrays.asList("http://localhost:4200", "https://prueba-tecnica-inmobiliaria-angular-applicaton.vercel.app");
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin(originCors);
+        config.setAllowedOrigins(allowedOrigins);
 
         //Define the headers
         config.addAllowedHeader("*");
