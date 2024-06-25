@@ -2,6 +2,7 @@ package com.example.commercezeballos.current_account_management.application.serv
 
 import com.example.commercezeballos.current_account_management.application.dtos.request.TransactionRequestDto;
 import com.example.commercezeballos.current_account_management.application.dtos.response.TransactionResponseDto;
+import com.example.commercezeballos.current_account_management.application.services.PaymentPlanService;
 import com.example.commercezeballos.current_account_management.application.services.TransactionService;
 import com.example.commercezeballos.current_account_management.domain.entities.Transaction;
 import com.example.commercezeballos.current_account_management.infraestructure.CurrentAccountRepository;
@@ -9,10 +10,13 @@ import com.example.commercezeballos.current_account_management.infraestructure.T
 import com.example.commercezeballos.products_management.domain.entities.Product;
 import com.example.commercezeballos.products_management.infraestructure.ProductRepository;
 import com.example.commercezeballos.shared.config.ModelMapperConfig;
+import com.example.commercezeballos.shared.exception.ApplicationException;
 import com.example.commercezeballos.shared.exception.ResourceNotFoundException;
 import com.example.commercezeballos.shared.model.dto.response.ApiResponse;
 
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,13 +36,17 @@ public class ITransactionService implements TransactionService {
 
     private final CurrentAccountRepository currentAccountRepository;
 
+    private final PaymentPlanService paymentPlanService;
 
-    public ITransactionService(TransactionRepository transactionRepository, ModelMapperConfig modelMapperConfig, ProductRepository productRepository, CurrentAccountRepository currentAccountRepository) {
+
+    public ITransactionService(TransactionRepository transactionRepository, ModelMapperConfig modelMapperConfig, ProductRepository productRepository, CurrentAccountRepository currentAccountRepository, PaymentPlanService paymentPlanService) {
         this.transactionRepository = transactionRepository;
         this.modelMapperConfig = modelMapperConfig;
         this.productRepository = productRepository;
         this.currentAccountRepository = currentAccountRepository;
+        this.paymentPlanService = paymentPlanService;
     }
+
 
     // Implement methods
     @Override
@@ -57,14 +65,24 @@ public class ITransactionService implements TransactionService {
             var product = productRepository.findById(productId)
                     .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: "+productId));
             products.add(product);
-
         }
+
+
         transaction.setTransactionDate(LocalDateTime.now());
-        transaction.setPaymentCompleted(false);
-        transaction.setRemainingInstallments(transaction.getInstallments());
         transaction.setProducts(products);
 
         var transactionSaved = transactionRepository.save(transaction);
+
+        //actualizar el credito usado
+        double newUsedCredit= currentAccount.getUsedCredit()+transactionSaved.getTransactionAmountNotInterest();
+        if(newUsedCredit > currentAccount.getCreditLimit()){
+            throw new ApplicationException(HttpStatus.BAD_REQUEST,"Credit limit exceed");
+        }
+        currentAccount.setUsedCredit(newUsedCredit);
+        currentAccountRepository.save(currentAccount);
+
+        //actualizar el plan de pagos
+        paymentPlanService.updatePaymentPlans(currentAccount);
 
         return new ApiResponse<>(true,"Transaction successful register", null);
 

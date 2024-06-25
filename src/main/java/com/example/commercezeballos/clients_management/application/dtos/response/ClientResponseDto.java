@@ -14,5 +14,5 @@ public class ClientResponseDto {
     private String email;
     private String dni;
     private String phone;
-    private String dtype;
+    //private String dtype;
 }

@@ -1,7 +1,6 @@
 package com.example.commercezeballos.current_account_management.application.dtos.request;
 
 
-import com.example.commercezeballos.current_account_management.domain.enums.ETransactionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,21 +22,9 @@ public class TransactionRequestDto {
     @NotNull(message = "El monto de la transacción no puede ser nulo")
     private Double transactionAmountNotInterest;
 
-    @NotNull(message = "El tipo de transacción no puede ser nulo")
-    private Double transactionAmountWithInterest;
-
-    @Valid
-    @NotNull(message = "El tipo de transacción no puede ser nulo")
-    private ETransactionType transactionType;
 
     //Puede ser nulo
     private String transactionDescription;
-
-    @NotNull(message = "El pago completado no puede ser nulo")
-    private Integer installments;// numero de cuotas
-
-    @NotNull(message = "El monto por cuota no puede ser nulo")
-    private Double installmentAmount;// monto por cuota
 
     @NotBlank(message = "El DNI del cliente no puede ser vacío")
     @NotNull(message = "El DNI del cliente no puede ser nulo")

@@ -35,6 +35,4 @@ public class ClientSignUpRequestDto {
     @Size(min = 9, max = 9, message = "Phone number must be 9 digits")
     @Pattern(regexp = "^[0-9]{9}$", message = "Phone number must be 9 digits")
     private String phone;
-
-
 }
