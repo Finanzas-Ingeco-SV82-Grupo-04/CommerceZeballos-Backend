@@ -23,7 +23,6 @@ public class CurrentAccountResponseDto {
     private Integer numberOfMonths;
     private LocalDateTime openingDate;
     private ETypeFrecuency paymentFrequency;
-
     private Double interestRate;
     private Double moratoriumRate;
     private String dniClient;

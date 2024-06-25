@@ -26,4 +26,9 @@ public interface PaymentPlanRepository extends JpaRepository<PaymentPlan, Long> 
     @Transactional
     @Query("UPDATE PaymentPlan p SET p.isPaid = :isPaid WHERE p.id = :id")
     void updatePaymentPlanIsPaidById(Long id, Boolean isPaid);
+
+
+    //traer los planes de pago por dni del cliente
+    @Query("SELECT p FROM PaymentPlan p WHERE p.currentAccount.dniClient = :dniClient")
+    List<PaymentPlan> findPaymentPlanByDni(String dniClient);
 }

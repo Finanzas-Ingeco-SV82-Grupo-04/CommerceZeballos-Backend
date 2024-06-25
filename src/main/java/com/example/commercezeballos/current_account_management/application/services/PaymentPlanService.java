@@ -14,4 +14,6 @@ public interface PaymentPlanService {
 
     //actualizar el estado de pago de un plan de pago por id
     void updatePaymentPlanIsPaidById(Long id, Boolean isPaid);
+
+    //traer los planes de pago por dni del cliente
 }

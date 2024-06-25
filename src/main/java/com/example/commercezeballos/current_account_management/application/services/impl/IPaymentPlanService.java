@@ -1,5 +1,6 @@
 package com.example.commercezeballos.current_account_management.application.services.impl;
 import com.example.commercezeballos.current_account_management.application.dtos.request.PaymentPlanRequestDto;
+import com.example.commercezeballos.current_account_management.application.dtos.response.PaymentPlanResponseDto;
 import com.example.commercezeballos.current_account_management.application.services.PaymentPlanService;
 import com.example.commercezeballos.current_account_management.domain.entities.CurrentAccount;
 import com.example.commercezeballos.current_account_management.domain.entities.PaymentPlan;
@@ -49,9 +50,14 @@ public class IPaymentPlanService implements PaymentPlanService {
 */
     @Override
     public ApiResponse<?> findPaymentPlanByDni(String dni) {
-        var paymentPlans = paymentPlanRepository.findByCurrentAccount_DniClient(dni);
+        var paymentPlans = paymentPlanRepository.findPaymentPlanByDni(dni);
 
-        return new ApiResponse<>(true, "Payment plans found successfully", paymentPlans);
+        //map to PaymentPlanResponseDto
+        List<PaymentPlanResponseDto> paymentPlanResponseDto = paymentPlans.stream()
+                .map(paymentPlan -> modelMapperConfig.modelMapper().map(paymentPlan, PaymentPlanResponseDto.class))
+                .toList();
+
+        return new ApiResponse<>(true, "Payment plans found successfully", paymentPlanResponseDto);
     }
 
     @Override
