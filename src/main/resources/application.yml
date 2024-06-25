@@ -7,9 +7,9 @@ spring:
         max-file-size: 3MB
         max-request-size: 3MB
 
-    config:
-      import:
-         - env.properties
+   # config:
+    #  import:
+     #    - env.properties
     application:
         name: zeballos_application
     datasource:
