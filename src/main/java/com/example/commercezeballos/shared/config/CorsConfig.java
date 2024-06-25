@@ -21,7 +21,7 @@ public class CorsConfig {
 
         //Define the origin, methods, and headers that are allowed
         //Define the origin
-        List<String> allowedOrigins = Arrays.asList("http://localhost:4200", "https://prueba-tecnica-inmobiliaria-angular-applicaton.vercel.app");
+        List<String> allowedOrigins = Arrays.asList("http://localhost:4200", "https://test-zeballos.vercel.app/");
 
         config.setAllowCredentials(true);
         config.setAllowedOrigins(allowedOrigins);
